@@ -25,6 +25,7 @@ export default function Home() {
   useEffect(() => {
     const currentPath = window.location.hash;
     setActivePage(currentPath);
+    document.title = "New Title";
   }, []);
   const animationContainer = useRef(null);
   useEffect(() => {
