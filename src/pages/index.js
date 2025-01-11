@@ -17,7 +17,34 @@ const geistMono = Geist_Mono({
 
 export default function Home() {
   const [activePage, setActivePage] = useState("");
+
+  // Update active page based on the current URL hash
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const currentPath = window.location.hash;
+      setActivePage(currentPath);
+      document.title = "New Title"; // Modify document title only on the client
+    }
+  }, []);
+
   const animationContainer = useRef(null);
+
+  // Load Lottie animation only on the client-side
+  useEffect(() => {
+    if (typeof window !== "undefined" && animationContainer.current) {
+      console.log("Loading Lottie Animation");
+      lottie.loadAnimation({
+        container: animationContainer.current,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "/animations/home-animation.json",
+      });
+    }
+  }, []);
+
+  const [isFullStack, setIsFullStack] = useState(true);
+
   // Toggle full-stack text every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
