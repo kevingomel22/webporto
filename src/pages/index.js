@@ -1,12 +1,9 @@
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
-import Button from "/components/Button";
 import Head from "next/head";
 import { useEffect, useRef } from "react";
 import lottie from "lottie-web";
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,33 +17,7 @@ const geistMono = Geist_Mono({
 
 export default function Home() {
   const [activePage, setActivePage] = useState("");
-
-  // Update active page based on the current URL hash
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const currentPath = window.location.hash;
-      setActivePage(currentPath);
-      document.title = "New Title"; // Modify document title only on the client
-    }
-  }, []);
-
   const animationContainer = useRef(null);
-
-  // Load Lottie animation only on the client-side
-  useEffect(() => {
-    if (typeof window !== "undefined" && animationContainer.current) {
-      lottie.loadAnimation({
-        container: animationContainer.current,
-        renderer: "svg",
-        loop: true,
-        autoplay: true,
-        path: "/animations/home-animation.json", // Ensure this path is correct
-      });
-    }
-  }, []);
-
-  const [isFullStack, setIsFullStack] = useState(true);
-
   // Toggle full-stack text every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
