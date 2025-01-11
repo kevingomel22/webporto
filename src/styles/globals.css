@@ -19,3 +19,37 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+.lottie-container:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+.bg-customBlue {
+  background-color: #2c3e50; /* Pilih warna sesuai preferensi */
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(45, 95, 189, 0.4);
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+.css-button-rounded--sky {
+  min-width: 130px;
+  height: 40px;
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  outline: none;
+  border-radius: 5px;
+  border: 2px solid #4433ff;
+  background: #4433ff;
+}
+.css-button-rounded--sky:hover {
+  background: #fff;
+  color: #4433ff;
+}
