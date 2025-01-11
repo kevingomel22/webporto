@@ -2,12 +2,12 @@ import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
 import Button from "/components/Button";
 import Head from "next/head";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import lottie from "lottie-web";
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
+
+// Menggunakan font dari Google Fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -20,21 +20,27 @@ const geistMono = Geist_Mono({
 
 export default function Home() {
   const [activePage, setActivePage] = useState("");
+  const [isClient, setIsClient] = useState(false); // State untuk memastikan hanya di sisi klien
+
+  useEffect(() => {
+    // Hanya set state di sisi klien
+    setIsClient(true);
+  }, []);
 
   // Update halaman aktif berdasarkan URL saat ini
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (isClient) {
       const currentPath = window.location.hash;
       setActivePage(currentPath);
       document.title = "New Title"; // Akses document hanya di sisi klien
     }
-  }, []);
+  }, [isClient]);
 
   const animationContainer = useRef(null);
 
   // Pastikan animasi hanya dimuat di sisi klien
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (isClient && animationContainer.current) {
       lottie.loadAnimation({
         container: animationContainer.current, // Kontainer animasi
         renderer: "svg", // Format rendering
@@ -43,7 +49,7 @@ export default function Home() {
         path: "/animations/home-animation.json", // Path file JSON (pastikan path benar)
       });
     }
-  }, []);
+  }, [isClient]);
 
   const [isFullStack, setIsFullStack] = useState(true);
 
@@ -63,6 +69,10 @@ export default function Home() {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  if (!isClient) {
+    return null; // Menampilkan apa pun sebelum klien siap
+  }
   return (
     <div>
       <div>
