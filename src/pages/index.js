@@ -43,6 +43,15 @@ export default function Home() {
     }, 3000); // Ganti teks setiap 3 detik
     return () => clearInterval(interval); // Bersihkan interval saat komponen unmount
   }, []);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Fungsi untuk toggle menu
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
   return (
     <div>
       <div>
@@ -52,13 +61,14 @@ export default function Home() {
             <meta name="description" content="Portfolio of Kevin Gomel" />
           </Head>
           <header className="bg-customBlue text-white p-4 sticky top-0 z-50 shadow-lg">
-            <nav className="container mx-auto flex justify-between items-center">
+            <nav className="container mx-auto flex justify-between items-center relative">
               <h1 className="text-2xl font-bold flex items-center">KPG</h1>
+              {/* Menu navigasi untuk desktop */}
               <ul className="hidden lg:flex space-x-6">
                 <li>
                   <a
                     href="#home"
-                    onClick={() => setActivePage("#home")} // Update active page
+                    onClick={() => setActivePage("#home")}
                     className={`hover:text-indigo-300 transition-colors duration-300 ${
                       activePage === "#home" ? "text-indigo-500" : ""
                     }`}
@@ -69,7 +79,7 @@ export default function Home() {
                 <li>
                   <a
                     href="#about"
-                    onClick={() => setActivePage("#about")} // Update active page
+                    onClick={() => setActivePage("#about")}
                     className={`hover:text-indigo-300 transition-colors duration-300 ${
                       activePage === "#about" ? "text-indigo-500" : ""
                     }`}
@@ -80,7 +90,7 @@ export default function Home() {
                 <li>
                   <a
                     href="#projects"
-                    onClick={() => setActivePage("#projects")} // Update active page
+                    onClick={() => setActivePage("#projects")}
                     className={`hover:text-indigo-300 transition-colors duration-300 ${
                       activePage === "#projects" ? "text-indigo-500" : ""
                     }`}
@@ -91,7 +101,7 @@ export default function Home() {
                 <li>
                   <a
                     href="#contact"
-                    onClick={() => setActivePage("#contact")} // Update active page
+                    onClick={() => setActivePage("#contact")}
                     className={`hover:text-indigo-300 transition-colors duration-300 ${
                       activePage === "#contact" ? "text-indigo-500" : ""
                     }`}
@@ -100,7 +110,12 @@ export default function Home() {
                   </a>
                 </li>
               </ul>
-              <button className="lg:hidden text-white">
+
+              {/* Hamburger Button */}
+              <button
+                className="lg:hidden absolute right-4 top-4 text-white"
+                onClick={toggleMenu} // Menambahkan event handler untuk toggle menu
+              >
                 <svg
                   className="h-6 w-6"
                   xmlns="http://www.w3.org/2000/svg"
@@ -116,9 +131,71 @@ export default function Home() {
                   />
                 </svg>
               </button>
+
+              {/* Side Menu (menampilkan dari kanan ke kiri) */}
+              <div
+                className={`lg:hidden fixed top-0 right-0 h-full w-3/4 bg-customBlue transition-transform duration-300 ease-in-out transform ${
+                  isMenuOpen ? "translate-x-0" : "translate-x-full"
+                }`}
+              >
+                <div className="flex justify-end p-4">
+                  {/* Tombol untuk menutup menu */}
+                  <button
+                    className="text-white text-3xl"
+                    onClick={closeMenu} // Menambahkan event handler untuk menutup menu
+                  >
+                    &times;
+                  </button>
+                </div>
+                <ul className="space-y-6 p-10 text-white">
+                  <li>
+                    <a
+                      href="#home"
+                      onClick={() => setActivePage("#home")}
+                      className={`hover:text-indigo-300 transition-colors duration-300 ${
+                        activePage === "#home" ? "text-indigo-500" : ""
+                      }`}
+                    >
+                      Home
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#about"
+                      onClick={() => setActivePage("#about")}
+                      className={`hover:text-indigo-300 transition-colors duration-300 ${
+                        activePage === "#about" ? "text-indigo-500" : ""
+                      }`}
+                    >
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#projects"
+                      onClick={() => setActivePage("#projects")}
+                      className={`hover:text-indigo-300 transition-colors duration-300 ${
+                        activePage === "#projects" ? "text-indigo-500" : ""
+                      }`}
+                    >
+                      Projects
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#contact"
+                      onClick={() => setActivePage("#contact")}
+                      className={`hover:text-indigo-300 transition-colors duration-300 ${
+                        activePage === "#contact" ? "text-indigo-500" : ""
+                      }`}
+                    >
+                      Contact
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </nav>
           </header>
-
           <section
             id="home"
             className="min-h-screen bg-customBlue flex items-center justify-center"
@@ -130,11 +207,10 @@ export default function Home() {
                   <h1 className="font-extrabold mb-4 text-[#4DA1A9] text-shadow">
                     Hello World, I am
                   </h1>
-
-                  <h1 className="text-5xl font-extrabold mb-4 text-white text-shadow">
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-white text-shadow">
                     Kevin Gomel
                   </h1>
-                  <h1 className="text-5xl font-extrabold mb-4 text-[#98DED9] text-shadow">
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-[#98DED9] text-shadow">
                     <Typewriter
                       words={["Full-stack Developer", "Web Developer"]}
                       loop={true}
@@ -145,7 +221,7 @@ export default function Home() {
                       delaySpeed={1500}
                     />
                   </h1>
-                  <p className="text-lg text-gray-300 leading-relaxed mt-4">
+                  <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mt-4">
                     I recently graduated from{" "}
                     <span className="font-semibold text-[#93bde1]">
                       Petra Christian University
@@ -159,7 +235,7 @@ export default function Home() {
                 <div className="flex justify-center">
                   <div
                     ref={animationContainer}
-                    className="w-80 h-80 lottie-container"
+                    className="w-full sm:w-96 lg:w-80 h-auto lottie-container"
                   ></div>
                 </div>
               </div>
@@ -168,7 +244,7 @@ export default function Home() {
 
           <section
             id="about"
-            className="min-h-screen bg-customBlue flex items-center justify-center "
+            className="min-h-screen bg-customBlue flex items-center justify-center px-4 sm:px-6 lg:px-12"
           >
             <div className="container mx-auto">
               {/* Header */}
@@ -177,7 +253,7 @@ export default function Home() {
               </h2>
 
               {/* Grid Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 items-center">
                 {/* Foto Tambahan */}
                 <div className="flex justify-center lg:justify-start">
                   <Image
@@ -185,7 +261,7 @@ export default function Home() {
                     alt="About Kevin Gomel"
                     width={300}
                     height={300}
-                    className="rounded-lg shadow-lg object-cover"
+                    className="rounded-lg shadow-lg object-cover w-full sm:w-1/2"
                   />
                 </div>
 
@@ -208,6 +284,7 @@ export default function Home() {
                     and full-stack development. I am passionate about learning
                     new technologies and collaborating on exciting projects.
                   </p>
+
                   {/* Highlight Keahlian */}
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-white text-lg">
                     <li className="flex items-center">
@@ -281,12 +358,13 @@ export default function Home() {
               </div>
             </div>
           </section>
+
           <section
             id="projects"
             className="bg-customBlue flex items-center justify-center py-5"
           >
             {/* My Projects */}
-            <div className="container mx-auto text-center">
+            <div className="container mx-auto text-center px-4 sm:px-6 lg:px-12">
               <h2 className="text-4xl font-bold mb-6 text-white">
                 My Projects
               </h2>
@@ -296,7 +374,7 @@ export default function Home() {
               </p>
 
               {/* Card Projects */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center max-w-screen-lg mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center max-w-screen-lg mx-auto">
                 {/* Project 2 */}
                 <div className="relative bg-white p-6 rounded-lg shadow-lg transform transition-all hover:scale-105 mx-auto">
                   {/* Gambar Proyek */}
@@ -327,14 +405,14 @@ export default function Home() {
             id="contact"
             className="bg-customBlue flex items-center justify-center py-5"
           >
-            <div className="container mx-auto">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-12">
               {/* Header */}
               <div className="border-t border-gray-300 my-12"></div>
 
               <h2 className="text-4xl font-bold text-center mb-12 text-white">
                 Contact Me
               </h2>
-              <p className="text-lg  text-white text-center text-gray-600 mb-12">
+              <p className="text-lg text-white text-center text-gray-600 mb-12">
                 Feel free to reach out to me for collaborations, questions, or
                 just to say hi!
               </p>
@@ -395,7 +473,7 @@ export default function Home() {
                     {/* Tombol Kirim */}
                     <button
                       type="submit"
-                      className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md css-button-rounded--sky "
+                      className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg shadow-md css-button-rounded--sky"
                     >
                       Send Message
                     </button>
@@ -465,24 +543,25 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <footer class="bg-gradient-to-r from-teal-400 to-blue-600 text-white py-8">
-            <div class="container mx-auto px-6 md:flex md:items-center md:justify-between">
-              <div class="text-center md:text-left">
-                <p class="text-sm">
+
+          <footer className="bg-gradient-to-r from-teal-400 to-blue-600 text-white py-8">
+            <div className="container mx-auto px-6 md:flex md:items-center md:justify-between">
+              <div className="text-center md:text-left">
+                <p className="text-sm">
                   &copy; 2025 Kevin Gomel. All rights reserved.
                 </p>
               </div>
 
-              <div class="mt-4 md:mt-0 flex justify-center space-x-6">
+              <div className="mt-4 md:mt-0 flex justify-center space-x-6">
                 <a
                   href="https://github.com/kevingomel22"
                   target="_blank"
-                  class="text-gray-400 hover:text-white transition"
+                  className="text-gray-400 hover:text-white transition"
                   aria-label="GitHub"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6"
+                    className="h-6 w-6"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -493,12 +572,12 @@ export default function Home() {
                 <a
                   href="https://instagram.com/kevingomell"
                   target="_blank"
-                  class="text-gray-400 hover:text-white transition"
+                  className="text-gray-400 hover:text-white transition"
                   aria-label="Instagram"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6"
+                    className="h-6 w-6"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -509,12 +588,12 @@ export default function Home() {
                 <a
                   href="https://linkedin.com/in/kevin-gomel-b01135291"
                   target="_blank"
-                  class="text-gray-400 hover:text-white transition"
+                  className="text-gray-400 hover:text-white transition"
                   aria-label="LinkedIn"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6"
+                    className="h-6 w-6"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
