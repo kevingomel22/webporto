@@ -16,52 +16,54 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
-  const [activePage, setActivePage] = useState("");
+  const [activePage, setActivePage] = useState(""); // Mendeklarasikan activePage
+  const animationContainer = useRef(null);
+  const [isClient, setIsClient] = useState(false);
+  const [isFullStack, setIsFullStack] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Update active page based on the current URL hash
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (isClient) {
       const currentPath = window.location.hash;
       setActivePage(currentPath);
-      document.title = "New Title"; // Modify document title only on the client
+      document.title = "New Title"; // Modifikasi document title hanya di sisi klien
+    }
+  }, [isClient]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsClient(true); // Pastikan kita hanya mengakses window setelah komponen dimuat di sisi klien
     }
   }, []);
 
-  const animationContainer = useRef(null);
-
   // Load Lottie animation only on the client-side
   useEffect(() => {
-    if (typeof window !== "undefined" && animationContainer.current) {
-      console.log("Loading Lottie Animation");
+    if (isClient && animationContainer.current) {
       lottie.loadAnimation({
         container: animationContainer.current,
         renderer: "svg",
         loop: true,
         autoplay: true,
-        path: "/animations/home-animation.json",
+        path: "/animations/home-animation.json", // Pastikan path animasi sudah benar
       });
     }
-  }, []);
+  }, [isClient]);
 
-  const [isFullStack, setIsFullStack] = useState(true);
-
-  // Toggle full-stack text every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setIsFullStack((prev) => !prev);
-    }, 3000); // Change text every 3 seconds
-    return () => clearInterval(interval); // Cleanup the interval on unmount
+    }, 3000); // Ganti teks setiap 3 detik
+    return () => clearInterval(interval); // Bersihkan interval saat komponen unmount
   }, []);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Toggle the menu
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
   return (
     <div>
       <div>
@@ -241,6 +243,7 @@ export default function Home() {
                     technology and design.
                   </p>
                 </div>
+                {/* Animasi Lottie */}
                 {/* Animasi Lottie */}
                 <div className="flex justify-center">
                   <div
