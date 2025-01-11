@@ -23,27 +23,37 @@ export default function Home() {
 
   // Update halaman aktif berdasarkan URL saat ini
   useEffect(() => {
-    const currentPath = window.location.hash;
-    setActivePage(currentPath);
-    document.title = "New Title";
+    if (typeof window !== "undefined") {
+      const currentPath = window.location.hash;
+      setActivePage(currentPath);
+      document.title = "New Title"; // Akses document hanya di sisi klien
+    }
   }, []);
+
   const animationContainer = useRef(null);
+
+  // Pastikan animasi hanya dimuat di sisi klien
   useEffect(() => {
-    lottie.loadAnimation({
-      container: animationContainer.current, // Kontainer animasi
-      renderer: "svg", // Format rendering
-      loop: true, // Animasi berulang
-      autoplay: true, // Mulai otomatis
-      path: "/animations/home-animation.json", // Path file JSON (pastikan path benar)
-    });
+    if (typeof window !== "undefined") {
+      lottie.loadAnimation({
+        container: animationContainer.current, // Kontainer animasi
+        renderer: "svg", // Format rendering
+        loop: true, // Animasi berulang
+        autoplay: true, // Mulai otomatis
+        path: "/animations/home-animation.json", // Path file JSON (pastikan path benar)
+      });
+    }
   }, []);
+
   const [isFullStack, setIsFullStack] = useState(true);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIsFullStack((prev) => !prev);
     }, 3000); // Ganti teks setiap 3 detik
     return () => clearInterval(interval); // Bersihkan interval saat komponen unmount
   }, []);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Fungsi untuk toggle menu
