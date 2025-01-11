@@ -6,13 +6,15 @@ import { useEffect, useRef, useState } from "react";
 import lottie from "lottie-web";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
-
+import dynamic from "next/dynamic";
 // Menggunakan font dari Google Fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
-
+const LottieAnimation = dynamic(() => import("/components/LottieAnimation"), {
+  ssr: false, // Disable server-side rendering
+});
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
