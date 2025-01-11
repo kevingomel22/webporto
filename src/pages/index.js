@@ -2,19 +2,17 @@ import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
 import Button from "/components/Button";
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import lottie from "lottie-web";
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
-import dynamic from "next/dynamic";
-// Menggunakan font dari Google Fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
-const LottieAnimation = dynamic(() => import("/components/LottieAnimation"), {
-  ssr: false, // Disable server-side rendering
-});
+
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -22,59 +20,50 @@ const geistMono = Geist_Mono({
 
 export default function Home() {
   const [activePage, setActivePage] = useState("");
-  const [isClient, setIsClient] = useState(false); // State untuk memastikan hanya di sisi klien
 
+  // Update active page based on the current URL hash
   useEffect(() => {
-    // Hanya set state di sisi klien
-    setIsClient(true);
-  }, []);
-
-  // Update halaman aktif berdasarkan URL saat ini
-  useEffect(() => {
-    if (isClient) {
+    if (typeof window !== "undefined") {
       const currentPath = window.location.hash;
       setActivePage(currentPath);
-      document.title = "New Title"; // Akses document hanya di sisi klien
+      document.title = "New Title"; // Modify document title only on the client
     }
-  }, [isClient]);
+  }, []);
 
   const animationContainer = useRef(null);
 
-  // Pastikan animasi hanya dimuat di sisi klien
+  // Load Lottie animation only on the client-side
   useEffect(() => {
-    if (isClient && animationContainer.current) {
+    if (typeof window !== "undefined" && animationContainer.current) {
       lottie.loadAnimation({
-        container: animationContainer.current, // Kontainer animasi
-        renderer: "svg", // Format rendering
-        loop: true, // Animasi berulang
-        autoplay: true, // Mulai otomatis
-        path: "/animations/home-animation.json", // Path file JSON (pastikan path benar)
+        container: animationContainer.current,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "/animations/home-animation.json", // Ensure this path is correct
       });
     }
-  }, [isClient]);
+  }, []);
 
   const [isFullStack, setIsFullStack] = useState(true);
 
+  // Toggle full-stack text every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setIsFullStack((prev) => !prev);
-    }, 3000); // Ganti teks setiap 3 detik
-    return () => clearInterval(interval); // Bersihkan interval saat komponen unmount
+    }, 3000); // Change text every 3 seconds
+    return () => clearInterval(interval); // Cleanup the interval on unmount
   }, []);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Fungsi untuk toggle menu
+  // Toggle the menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
-
-  if (!isClient) {
-    return null; // Menampilkan apa pun sebelum klien siap
-  }
   return (
     <div>
       <div>
