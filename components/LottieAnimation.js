@@ -6,6 +6,7 @@ export default function LottieAnimation() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // Pastikan kode ini hanya berjalan di sisi klien
     if (typeof window !== "undefined") {
       setIsClient(true);
     }
@@ -17,7 +18,7 @@ export default function LottieAnimation() {
         container: animationContainer.current,
         renderer: "svg",
         loop: true,
-        autoplay: true,
+        autoprefixer: true,
         path: "/animations/home-animation.json",
       });
     }

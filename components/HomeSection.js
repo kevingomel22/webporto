@@ -1,5 +1,10 @@
 import { Typewriter } from "react-simple-typewriter";
-import LottieAnimation from "./LottieAnimation";
+import dynamic from "next/dynamic";
+
+// Dynamic import dengan SSR dinonaktifkan
+const LottieAnimation = dynamic(() => import("../components/LottieAnimation"), {
+  ssr: false,
+});
 
 export default function HomeSection() {
   return (
